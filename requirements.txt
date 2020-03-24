@@ -123,7 +123,7 @@ python-dateutil==2.8.1
 python-debian==0.1.36
 python-dotenv==0.10.5
 pytz==2019.2
-pyxdg==0.25
+pyxdg==0.26
 PyYAML==5.3.1
 pyzmq==19.0.0
 qtconsole==4.7.1
