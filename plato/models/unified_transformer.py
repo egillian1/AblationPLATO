@@ -52,6 +52,8 @@ class UnifiedTransformer(ModelBase):
                            help="The parameter of gumbel softmax.")
         group.add_argument("--with_bow", type=str2bool, default=True,
                            help="Whether to use BoW loss.")
+        group.add_argument("--with_nll", type=str2bool, default=True,
+                           help="Whether to use NLL loss")
         group.add_argument("--hidden_dim", type=int, default=768,
                            help="The size of hidden vector in transformer.")
         group.add_argument("--num_heads", type=int, default=12,
@@ -105,6 +107,7 @@ class UnifiedTransformer(ModelBase):
         self.num_latent = hparams.num_latent
         self.tau = hparams.tau
         self.with_bow = hparams.with_bow
+        self.with_nll = hparams.with_nll
         self.hidden_dim = hparams.hidden_dim
         self.num_heads = hparams.num_heads
         self.num_layers = hparams.num_layers
@@ -495,12 +498,16 @@ class UnifiedTransformer(ModelBase):
                                        ignore_index=self.padding_idx)
         else:
             nll = layers.cross_entropy(outputs["dec_probs"], label, ignore_index=self.padding_idx)
-        nll = layers.reduce_sum(nll, dim=1)
-        token_nll = layers.reduce_sum(nll) / tgt_len
-        nll = layers.reduce_mean(nll)
-        metrics["nll"] = nll
-        metrics["token_nll"] = token_nll
-        loss = nll
+
+        loss = 0
+
+        if self.with_nll:
+            nll = layers.reduce_sum(nll, dim=1)
+            token_nll = layers.reduce_sum(nll) / tgt_len
+            nll = layers.reduce_mean(nll)
+            metrics["nll"] = nll
+            metrics["token_nll"] = token_nll
+            loss = nll
 
         if self.num_latent > 0 and self.with_bow:
             bow_probs = F.unsqueeze(outputs["bow_probs"], [1])
