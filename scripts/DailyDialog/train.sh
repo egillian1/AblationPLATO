@@ -38,7 +38,7 @@ python3 -u \
     --num_type_embeddings 2 \
     --use_discriminator true \
     --with_bow true \
-    --with_nll false \
+    --with_nll true \
     --num_epoch 10 \
     --lr 1e-5 \
     --save_checkpoint false \

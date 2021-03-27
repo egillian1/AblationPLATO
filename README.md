@@ -3,6 +3,8 @@ All credit for the PLATO model goes to Siqi Bao, Huang He, Fan Wang, Hua Wu and 
 
 The purpose of this repository is to perform an ablation study on the different types of loss functions for the model (and possibly other parts of the model as well).
 
+**Note:** This model requires `paddlepaddle` version 1.6.0 or `paddlepaddle-gpu` version 1.6.0.post107 depending on whether you use CPU or GPU
+
 **PLATO: Pre-trained Dialogue Generation Model with Discrete Latent Variable**
 [paper link](http://arxiv.org/abs/1910.07931)
 
